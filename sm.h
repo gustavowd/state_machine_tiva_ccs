@@ -11,7 +11,7 @@
 #include <stdbool.h>
 
 /* constantes usadas na comunicacao */
-#define STX     '$'//0x02
+#define STX     '$'
 #define ETX     '\n'
 
 /* numero maximo de bytes do buffer de dados */
@@ -20,16 +20,18 @@
 /* possiveis estados da maquina de estados de comunicacao */
 typedef enum {
     ST_STX = 0, ST_ADDR, ST_QTD, ST_DATA, ST_CHK, ST_ETX, ST_END
-} States;
+} states;
 
-typedef void (*Handle_t)(unsigned char *data);
+typedef void (*handle_t)(unsigned char *data);
+
+typedef struct StateMachine sm_t;
 
 //Funções executadas nos estados
-typedef void (*Action_t)(void *sm, unsigned char data);
+typedef void (*action_t)(sm_t *sm, unsigned char data);
 
 
-typedef struct StateMachine {
-    States state;
+struct StateMachine {
+    states state;
     unsigned char buffer[MAX_BUFFER];
     unsigned char chk;
     unsigned char qtd;
@@ -37,14 +39,14 @@ typedef struct StateMachine {
     char flag_addr;
     unsigned short addr;
     unsigned short my_addr;
-    Action_t action[ST_END];
+    action_t action[ST_END];
     //bool result;
-    Handle_t HandlePackage;
-    Handle_t HandleError;
-} sm_t;
+    handle_t HandlePackage;
+    handle_t HandleError;
+};
 
 
-void initSM(sm_t *sm, unsigned short my_addr, Handle_t handle_function, Handle_t error_function);
+void initSM(sm_t *sm, unsigned short my_addr, handle_t handle_function, handle_t error_function);
 void ExecSM(sm_t *sm, unsigned char *data, int qtd);
 
 #endif /* SM_H_ */

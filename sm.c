@@ -96,7 +96,7 @@ static void stETX(sm_t *sm, unsigned char data)
     sm->state = ST_STX;
 }
 
-void initSM(sm_t *sm, unsigned short my_addr, Handle_t handle_function, Handle_t error_function)
+void initSM(sm_t *sm, unsigned short my_addr, handle_t handle_function, handle_t error_function)
 {
     sm->state = ST_STX;
     sm->my_addr = my_addr;
@@ -104,12 +104,12 @@ void initSM(sm_t *sm, unsigned short my_addr, Handle_t handle_function, Handle_t
     sm->chk = 0;
     sm->idx = 0;
     sm->qtd = 0;
-    sm->action[ST_STX] = (Action_t)stSTX;
-    sm->action[ST_ADDR] = (Action_t)stAddr;
-    sm->action[ST_QTD] = (Action_t)stQtd;
-    sm->action[ST_DATA] = (Action_t)stData;
-    sm->action[ST_CHK] = (Action_t)stChk;
-    sm->action[ST_ETX] = (Action_t)stETX;
+    sm->action[ST_STX] = stSTX;
+    sm->action[ST_ADDR] = stAddr;
+    sm->action[ST_QTD] = stQtd;
+    sm->action[ST_DATA] = stData;
+    sm->action[ST_CHK] = stChk;
+    sm->action[ST_ETX] = stETX;
     sm->HandlePackage = handle_function;
     sm->HandleError = error_function;
 }
