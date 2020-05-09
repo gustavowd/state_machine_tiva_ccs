@@ -20,7 +20,7 @@
 /* possiveis estados da maquina de estados de comunicacao */
 typedef enum {
     ST_STX = 0, ST_ADDR, ST_QTD, ST_DATA, ST_CHK, ST_ETX, ST_END
-} states;
+} states_t;
 
 typedef void (*handle_t)(unsigned char *data);
 
@@ -31,7 +31,7 @@ typedef void (*action_t)(sm_t *sm, unsigned char data);
 
 
 struct StateMachine {
-    states state;
+    states_t state;
     unsigned char buffer[MAX_BUFFER];
     unsigned char chk;
     unsigned char qtd;
